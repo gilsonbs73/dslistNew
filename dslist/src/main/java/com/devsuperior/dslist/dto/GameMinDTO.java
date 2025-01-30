@@ -1,6 +1,7 @@
 package com.devsuperior.dslist.dto;
 
 import com.devsuperior.dslist.entities.Game;
+import com.devsuperior.dslist.projection.GameMinProjection;
 
 public class GameMinDTO {
 	
@@ -21,6 +22,16 @@ public class GameMinDTO {
 		this.year = entities.getYear(); /* Se não tivesse pegando os dados da entidade, usaria normal os paramentos passado no argumentos. year; */
 		imgUrl = entities.getImgUrl(); /* Se não tivesse pegando os dados da entidade, usaria normal os paramentos passado no argumentos. imgUrl; */
 		shortDescription = entities.getShortDescription(); /* Se não tivesse pegando os dados da entidade, usaria normal os paramentos passado no argumentos. getShortDescription; */
+		/*Pode apagar o this. porque não tem ambiguidade. Apagar de uns pra exemplificar.  */
+	}
+	
+	/*public GameMinDTO(Long id, String title, Integer year, String imgUrl, String shortDescription) {*/
+	public GameMinDTO(GameMinProjection projection) {  /* Instancia Construtor GameMinDto usando a classe entidade copiando os dados do Game para o DTO.*/
+		this.id = projection.getId();  /* Se não tivesse pegando os dados da entidade, usaria normal os paramentos passado no argumentos. id; */
+		this.title = projection.getTitle(); /* Se não tivesse pegando os dados da entidade, usaria normal os paramentos passado no argumentos. title; */
+		this.year = projection.getYear(); /* Se não tivesse pegando os dados da entidade, usaria normal os paramentos passado no argumentos. year; */
+		imgUrl = projection.getImgUrl(); /* Se não tivesse pegando os dados da entidade, usaria normal os paramentos passado no argumentos. imgUrl; */
+		shortDescription = projection.getShortDescription(); /* Se não tivesse pegando os dados da entidade, usaria normal os paramentos passado no argumentos. getShortDescription; */
 		/*Pode apagar o this. porque não tem ambiguidade. Apagar de uns pra exemplificar.  */
 	}
 

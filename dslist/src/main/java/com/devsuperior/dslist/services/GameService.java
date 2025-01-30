@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.dslist.dto.GameDTO;
 import com.devsuperior.dslist.dto.GameMinDTO;
 import com.devsuperior.dslist.entities.Game;
+import com.devsuperior.dslist.projection.GameMinProjection;
 import com.devsuperior.dslist.repositories.GameRepository;
 
 /*Toda classe service comum que não esta herdando de nada, tem que registrar pela anotação. 
@@ -20,6 +21,14 @@ public class GameService {
 	
 	@Autowired()  /* Anotação usada para injetar uma instancia da classe GameRepository na classe GameService */
 	private GameRepository gameRepository;
+	
+	/* método para retornar todos os dados do Game pesqauisado pelo Id*/
+	@Transactional(readOnly = true ) /* boa prática para somente leitura e fazer a busca mais rápida no banco. */
+	public GameDTO findById(Long id) {
+		Game result = gameRepository.findById(id).get();
+		GameDTO dto = new GameDTO(result);
+		return dto;
+	}
 	
 	/* Esse método devolve uma lista do tipo GameMinDTO */
 	@Transactional(readOnly = true ) /* boa prática para somente leitura e fazer a busca mais rápida no banco. */
@@ -33,12 +42,20 @@ public class GameService {
 		return dto;
 	}
 	
-	/* método para retornar todos os dados do Game pesqauisado pelo Id*/
+	/* Esse método devolve uma lista do tipo GameMinDTO */
 	@Transactional(readOnly = true ) /* boa prática para somente leitura e fazer a busca mais rápida no banco. */
-	public GameDTO findById(Long id) {
-		Game result = gameRepository.findById(id).get();
-		GameDTO dto = new GameDTO(result);
+	public List<GameMinDTO> findByList(Long listId){   /* findAll() é um nome que eu dou a função, pode ser qualquer nome. */
+		
+		List<GameMinProjection> result =  gameRepository.searchByList(listId);  /* Todos os métodos que aparece vem da classe GameRepository que extende da GameRepository */
+		/* Dessa forma os dados são retornado sem nenhuma linha de programação para fazer busca na tabela. muito legal. */
+		List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
+		/*return result.stream().map(x -> new GameMinDTO(x)).toList(); pode ser assim também. */
+		/* Pega o result de Game e converte para GameMinDTO que é uma lista menos campos, essa é a forma de conversão.*/
 		return dto;
 	}
-		
+	
+	
+	
+	
+
 }
